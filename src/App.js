@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { ThemeProvider, createMuiTheme, makeStyles  } from '@material-ui/core/styles';
+import Switch from "@material-ui/core/Switch";
+import Header from './components/Header'
 
-function App() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    marginTop: '60px', 
+  },
+}));
+
+
+export default function App() {
+
+  const [darkMode, setdarkMode] = useState(false)
+  const classes = useStyles(); 
+  const themeSettings = createMuiTheme({
+    palette: {
+      primary: {main: '#0d47a1'},
+      secondary: {main: '#e65100'},
+      typography: {fontFamily: 'Bitter'}, 
+      type: darkMode === false ? 'light' : 'dark'
+    }
+  });
+
+  const handleThemeChange = () => {
+    setdarkMode(!darkMode);
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+      <ThemeProvider theme={themeSettings}>
+          <Header />
+          <Switch checked={darkMode} onChange={handleThemeChange} />
+      </ThemeProvider>
     </div>
   );
 }
 
-export default App;
+
